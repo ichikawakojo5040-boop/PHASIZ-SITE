@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PHASIZ - 高校生とイベント運営者のマッチングプラットフォーム</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-black: #000000;
+            --primary-white: #FFFFFF;
+            --accent-red: #E63946;
+            --light-gray: #F5F5F5;
+            --mid-gray: #CCCCCC;
+            --dark-gray: #333333;
+        }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            color: var(--dark-gray);
+            line-height: 1.8;
+            overflow-x: hidden;
+            background: var(--primary-white);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-container {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-image {
+            height: 40px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 3rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--dark-gray);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent-red);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-red);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, var(--primary-black) 0%, var(--dark-gray) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            margin-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle, rgba(230, 57, 70, 0.1) 0%, transparent 70%);
+            animation: pulse 8s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: var(--primary-white);
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        .hero-logo {
+            max-width: 500px;
+            width: 90%;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            letter-spacing: 3px;
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.3s forwards;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            opacity: 0;
+            animation: fadeInUp 1s ease 0.6s forwards;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 8rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 3.5rem;
+            letter-spacing: 2px;
+            margin-bottom: 3rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: var(--accent-red);
+        }
+
+        /* Matching Section */
+        .matching-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .card {
+            background: var(--light-gray);
+            padding: 3rem;
+            border-radius: 0;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(230, 57, 70, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .card:hover::before {
+            left: 100%;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .card p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--dark-gray);
+        }
+
+        .card-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 1rem 2.5rem;
+            background: var(--accent-red);
+            color: var(--primary-white);
+            text-decoration: none;
+            font-weight: 700;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .card-link:hover {
+            background: var(--primary-black);
+            transform: translateX(5px);
+        }
+
+        /* Team Section */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .team-member {
+            background: var(--light-gray);
+            padding: 3rem 2rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(230, 57, 70, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .team-member:hover::before {
+            left: 100%;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-icon {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 2rem;
+            transition: transform 0.4s ease;
+        }
+
+        .team-member:hover .team-icon {
+            transform: scale(1.1);
+        }
+
+        .team-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .team-info h4 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--primary-black);
+        }
+
+        .team-info p {
+            font-size: 1rem;
+            color: var(--dark-gray);
+        }
+
+        /* Vision Section */
+        .vision-section {
+            background: var(--primary-black);
+            color: var(--primary-white);
+            padding: 8rem 5%;
+            position: relative;
+        }
+
+        .vision-content {
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .vision-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 4rem;
+            letter-spacing: 3px;
+            margin-bottom: 2rem;
+            color: var(--accent-red);
+        }
+
+        .vision-subtitle {
+            font-size: 2rem;
+            font-weight: 300;
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .vision-text {
+            font-size: 1.2rem;
+            line-height: 2;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .vision-highlight {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-red);
+            margin: 3rem 0;
+        }
+
+        /* Activities Section */
+        .activities-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        .activity-item {
+            background: var(--light-gray);
+            padding: 4rem 3rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .activity-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(230, 57, 70, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .activity-item:hover::before {
+            left: 100%;
+        }
+
+        .activity-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-icon {
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 2rem;
+            transition: transform 0.4s ease;
+        }
+
+        .activity-item:hover .activity-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .activity-icon svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .activity-item h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--primary-black);
+        }
+
+        .activity-item p {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--dark-gray);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary-black);
+            color: var(--primary-white);
+            padding: 3rem 5%;
+            text-align: center;
+        }
+
+        footer p {
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                gap: 1.5rem;
+                font-size: 0.85rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .matching-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .vision-title {
+                font-size: 2.5rem;
+            }
+
+            .vision-subtitle {
+                font-size: 1.5rem;
+            }
+
+            .activities-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 2rem;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Scroll animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo-container" onclick="scrollToTop()">
+                <img src="IMG_5002.jpeg" alt="PHASIZ Logo" class="logo-image">
+            </div>
+            <ul class="nav-links">
+                <li><a href="#matching">マッチング</a></li>
+                <li><a href="#team">メンバー紹介</a></li>
+                <li><a href="#vision">ビジョン</a></li>
+                <li><a href="#activities">活動実績</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <img src="IMG_5002.jpeg" alt="PHASIZ" class="hero-logo">
+            <h1>高校生とイベント運営者をつなぐ</h1>
+            <p>地域を変える、若者の情熱を解き放つ</p>
+        </div>
+    </section>
+
+    <!-- Matching Section -->
+    <section id="matching" class="section">
+        <h2 class="section-title">MATCHING SERVICE</h2>
+        
+        <div class="matching-cards">
+            <div class="card fade-in">
+                <h3>イベント運営者向け<br>高校生ヘッドハンティング</h3>
+                <p>同じ企画内容に情熱を持つ高校生と出会える。地域イベントを共に創り上げる仲間を見つけるマッチングプラットフォーム。企画の詳細を投稿し、志を同じくする若者とつながりましょう。</p>
+                <a href="#" class="card-link">詳細を見る →</a>
+            </div>
+
+            <div class="card fade-in">
+                <h3>高校生向け<br>イベント主催者検索</h3>
+                <p>自分の情熱を注げるイベントを見つけよう。地域で活動するイベント主催者の募集情報を検索し、興味のあるプロジェクトに参加できます。あなたのPASSIONを地域に届けるチャンスがここに。</p>
+                <a href="#" class="card-link">検索する →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="section">
+        <h2 class="section-title">OUR TEAM</h2>
+        
+        <div class="team-grid">
+            <div class="team-member fade-in">
+                <div class="team-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="35" r="15" fill="#E63946"/>
+                        <path d="M 30 60 Q 30 50 50 50 Q 70 50 70 60 L 70 85 L 30 85 Z" fill="#E63946"/>
+                    </svg>
+                </div>
+                <div class="team-info">
+                    <h4>リーダー</h4>
+                    <p>企画・運営統括</p>
+                </div>
+            </div>
+            <div class="team-member fade-in">
+                <div class="team-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="35" r="15" fill="#E63946"/>
+                        <path d="M 30 60 Q 30 50 50 50 Q 70 50 70 60 L 70 85 L 30 85 Z" fill="#E63946"/>
+                    </svg>
+                </div>
+                <div class="team-info">
+                    <h4>マーケティング</h4>
+                    <p>広報・SNS運営</p>
+                </div>
+            </div>
+            <div class="team-member fade-in">
+                <div class="team-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="35" r="15" fill="#E63946"/>
+                        <path d="M 30 60 Q 30 50 50 50 Q 70 50 70 60 L 70 85 L 30 85 Z" fill="#E63946"/>
+                    </svg>
+                </div>
+                <div class="team-info">
+                    <h4>デザイナー</h4>
+                    <p>UI/UX・グラフィック</p>
+                </div>
+            </div>
+            <div class="team-member fade-in">
+                <div class="team-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="35" r="15" fill="#E63946"/>
+                        <path d="M 30 60 Q 30 50 50 50 Q 70 50 70 60 L 70 85 L 30 85 Z" fill="#E63946"/>
+                    </svg>
+                </div>
+                <div class="team-info">
+                    <h4>エンジニア</h4>
+                    <p>技術開発・システム</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vision Section -->
+    <section id="vision" class="vision-section">
+        <div class="vision-content">
+            <h2 class="vision-title">OUR VISION</h2>
+            <p class="vision-subtitle">PHASIZが生み出したいのは、イベントではない<br>若者がPASSIONを注げる地域</p>
+            
+            <p class="vision-text">
+                「出ていく場所」ではなく「選びたくなる地元」<br>
+                若者が地域づくりの主役になる未来。
+            </p>
+            
+            <p class="vision-highlight">
+                静岡離れは、地域の未来そのものに直結している。
+            </p>
+            
+            <p class="vision-text">
+                だからこそ——<br>
+                若者が、帰りたくなる理由を創る。
+            </p>
+        </div>
+    </section>
+
+    <!-- Activities Section -->
+    <section id="activities" class="section">
+        <h2 class="section-title">OUR ACTIVITIES</h2>
+        
+        <div class="activities-grid">
+            <div class="activity-item fade-in">
+                <div class="activity-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="15" y="40" width="70" height="45" fill="none" stroke="#E63946" stroke-width="3"/>
+                        <path d="M 20 40 L 50 20 L 80 40" fill="none" stroke="#E63946" stroke-width="3"/>
+                        <circle cx="50" cy="60" r="8" fill="#E63946"/>
+                        <rect x="35" y="68" width="10" height="17" fill="#E63946"/>
+                        <rect x="55" y="68" width="10" height="17" fill="#E63946"/>
+                    </svg>
+                </div>
+                <h3>地域イベント運営</h3>
+                <p>地域コミュニティと連携し、若者が主体となるイベントを企画・運営。地域の魅力を発信し、住民とのつながりを深めています。</p>
+            </div>
+            <div class="activity-item fade-in">
+                <div class="activity-icon">
+                    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M 20 70 L 30 40 L 40 70 Z" fill="#E63946"/>
+                        <path d="M 40 70 L 50 30 L 60 70 Z" fill="#E63946"/>
+                        <path d="M 60 70 L 70 40 L 80 70 Z" fill="#E63946"/>
+                        <rect x="15" y="70" width="70" height="5" fill="#E63946"/>
+                        <circle cx="35" cy="50" r="3" fill="#fff"/>
+                        <circle cx="50" cy="45" r="3" fill="#fff"/>
+                        <circle cx="65" cy="52" r="3" fill="#fff"/>
+                    </svg>
+                </div>
+                <h3>屋台プロジェクト</h3>
+                <p>高校生が企画・運営する屋台を通じて、地域のお祭りやイベントに参加。地元の食材や文化を活かした体験を提供しています。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 PHASIZ. ALL RIGHTS RESERVED.</p>
+    </footer>
+
+    <script>
+        // Smooth scroll to top
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
